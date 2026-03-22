@@ -154,78 +154,81 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <main className="container mx-auto px-6 py-16 md:py-24">
-        <div className="max-w-4xl mx-auto text-center space-y-10">
-          {/* Logo */}
-          <div className="flex justify-center mb-6">
-            <div className="w-36 h-36 md:w-44 md:h-44 rounded-full bg-zinc-950 border border-zinc-800/60 flex items-center justify-center shadow-2xl shadow-black/60 ring-1 ring-zinc-700/20">
-              <img src="/bapal-logo.jpg" alt="BApal" className="w-24 h-24 md:w-28 md:h-28 rounded-full object-cover opacity-90" />
+      <main className="container mx-auto px-6 py-8 md:py-12">
+        <div className="max-w-4xl mx-auto text-center space-y-6">
+          {/* Compact Hero */}
+          <div className="space-y-4">
+            {/* Logo + Title Combined */}
+            <div className="flex flex-col items-center gap-3">
+              <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-zinc-950 border border-zinc-800/60 flex items-center justify-center shadow-xl shadow-yellow-400/10 ring-1 ring-yellow-400/10">
+                <img src="/bapal-logo.jpg" alt="BApal" className="w-14 h-14 md:w-16 md:h-16 rounded-full object-cover" />
+              </div>
+              <div className="space-y-1">
+                <h2 className="text-4xl md:text-6xl font-bold tracking-tight" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>
+                  <span className="text-white">BA</span><span className="text-zinc-300">pal</span>
+                </h2>
+                <p className="text-xs text-zinc-500 tracking-[0.3em] uppercase text-center">
+                  Entertainment
+                </p>
+              </div>
+            </div>
+
+            {/* Tagline + Quick Info */}
+            <div className="space-y-3">
+              <p className="text-sm md:text-base text-zinc-400 leading-relaxed">
+                2000년부터 함께한 아시아의 별<br />
+                <span className="text-yellow-400 font-semibold">Always with BoA</span>
+              </p>
+              
+              {/* Quick Stats */}
+              <div className="inline-flex items-center gap-4 text-xs bg-zinc-900/50 border border-zinc-800/50 rounded-full px-4 py-2">
+                <div className="text-center">
+                  <div className="text-yellow-400 font-bold">24+</div>
+                  <div className="text-zinc-600 text-[10px]">Years</div>
+                </div>
+                <div className="w-px h-6 bg-zinc-700"></div>
+                <div className="text-center">
+                  <div className="text-yellow-400 font-bold">5,000</div>
+                  <div className="text-zinc-600 text-[10px]">한정</div>
+                </div>
+                <div className="w-px h-6 bg-zinc-700"></div>
+                <div className="text-center">
+                  <div className="text-yellow-400 font-bold">$40</div>
+                  <div className="text-zinc-600 text-[10px]">팬키트</div>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Title */}
-          <div className="space-y-3">
-            <h2 className="text-5xl md:text-7xl font-bold tracking-tight" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>
-              <span className="text-white">BA</span><span className="text-zinc-300">pal</span>
-            </h2>
-            <p className="text-sm md:text-base text-zinc-500 font-light tracking-[0.4em] uppercase">
-              Entertainment
-            </p>
-          </div>
-
-          {/* Tagline */}
-          <p className="text-base md:text-lg text-zinc-400 max-w-xl mx-auto leading-relaxed tracking-wide">
-            2000년부터 함께한 아시아의 별<br />
-            <span className="text-yellow-400">Always with BoA</span>
-          </p>
-
-          {/* CTA Card */}
-          <div className="pt-8 space-y-6">
-            <div className="bg-gradient-to-b from-zinc-900/90 to-zinc-950 border border-zinc-800/40 rounded-2xl overflow-hidden max-w-sm mx-auto shadow-2xl shadow-black/40">
-              {/* Card Image Area */}
-              <div className="relative h-72 bg-gradient-to-b from-zinc-800/80 to-zinc-950 flex items-end justify-center p-8">
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-                <div className="relative text-center space-y-2">
-                  <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-zinc-950/60 border border-zinc-700/30 flex items-center justify-center backdrop-blur-sm">
-                    <img src="/bapal-logo.jpg" alt="BApal" className="w-10 h-10 rounded-full object-cover" />
+          {/* CTA Section - Compact */}
+          <div className="pt-4 space-y-4">
+            {/* Main CTA */}
+            <div className="bg-gradient-to-br from-yellow-400/10 via-yellow-400/5 to-transparent border border-yellow-400/30 rounded-2xl p-6 max-w-md mx-auto">
+              <div className="space-y-4">
+                <div className="text-center space-y-2">
+                  <div className="inline-flex items-center gap-2 bg-yellow-400/20 border border-yellow-400/40 rounded-full px-3 py-1 text-xs font-bold text-yellow-400">
+                    🗳️ 투표 진행 중
                   </div>
-                  <h3 className="text-xl font-bold tracking-tight" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>BApal</h3>
-                  <p className="text-[11px] text-zinc-500 tracking-[0.25em] uppercase">Entertainment</p>
+                  <p className="text-sm text-zinc-400">
+                    공식 팬클럽 이름을 함께 정해요!
+                  </p>
                 </div>
-              </div>
 
-              {/* CTA Content */}
-              <div className="px-7 py-6 text-center space-y-4">
-                <p className="text-sm text-zinc-500 leading-relaxed">
-                  공식 팬클럽 이름 투표 진행 중!<br />
-                  함께 만들어가는 팬덤 문화
-                </p>
-
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <Link
                     href="/kave"
-                    className="block w-full py-4 px-6 bg-yellow-400 hover:bg-yellow-500 text-black rounded-xl transition-all font-bold tracking-wide shadow-lg shadow-yellow-400/20"
+                    className="block w-full py-3.5 px-6 bg-yellow-400 hover:bg-yellow-500 text-black rounded-xl transition-all font-bold shadow-lg shadow-yellow-400/20 text-center"
                   >
-                    <span className="flex items-center justify-center gap-2">
-                      🏛️ PAL들의 KAVE 입장
-                      <span className="text-xs">→</span>
-                    </span>
+                    🏛️ KAVE 입장하기
                   </Link>
 
                   <Link
                     href="/shop"
-                    className="block w-full py-3 px-6 bg-yellow-400/10 hover:bg-yellow-400/20 border border-yellow-400/30 hover:border-yellow-400/50 text-yellow-400 rounded-xl transition-all text-sm font-semibold"
+                    className="block w-full py-3 px-6 bg-transparent hover:bg-yellow-400/10 border border-yellow-400/30 hover:border-yellow-400/50 text-yellow-400 rounded-xl transition-all text-sm font-semibold text-center"
                   >
-                    <span className="flex items-center justify-center gap-2">
-                      🎁 1기 PAL 팬키트 ($40)
-                      <span className="text-xs">→</span>
-                    </span>
+                    🎁 팬키트 구매 ($40)
                   </Link>
                 </div>
-
-                <p className="text-[11px] text-zinc-600 pt-1">
-                  멤버십 카드로 전용 혜택 받기
-                </p>
               </div>
             </div>
 
@@ -239,7 +242,7 @@ export default function Home() {
         </div>
 
         {/* About KAVE Section */}
-        <div id="about" className="max-w-4xl mx-auto mt-24 mb-16 p-8 bg-gradient-to-br from-zinc-900/50 to-zinc-950/50 border border-zinc-800/40 rounded-2xl">
+        <div id="about" className="max-w-4xl mx-auto mt-12 mb-8 p-6 bg-gradient-to-br from-zinc-900/50 to-zinc-950/50 border border-zinc-800/40 rounded-2xl">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold mb-3">PAL들의 KAVE란?</h2>
             <p className="text-zinc-400">BoA와 팬들이 함께 만드는 특별한 공간</p>
@@ -271,7 +274,7 @@ export default function Home() {
         </div>
 
         {/* Features Grid */}
-        <div className="grid md:grid-cols-3 gap-5 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-4 max-w-5xl mx-auto mt-8">
           {[
             { icon: '🎬', title: 'Exclusive Content', desc: '비하인드 영상, 미공개 포토, 라이브 토크' },
             { icon: '🎫', title: 'Concert Priority', desc: 'BoA 콘서트 우선 예매 + VIP 좌석' },
