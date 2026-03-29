@@ -12,27 +12,27 @@ const PRODUCTS = [
   },
   {
     id: 'lightstick', name: 'PALMATE 공식 응원봉', price: 35, priceKRW: 48000,
-    image: '/fankit.jpg', badge: '인기', pledgeAmount: 1500, stock: '상시 판매',
+    image: '/product-lightstick.png', badge: '인기', pledgeAmount: 1500, stock: '상시 판매',
     highlight: false, includes: ['공식 응원봉', '오프라인 콘서트 연동'],
   },
   {
     id: 'photocard-pack', name: '랜덤 포토카드 팩', price: 5, priceKRW: 6500,
-    image: '/fankit.jpg', badge: null, pledgeAmount: 200, stock: '상시 판매',
+    image: '/product-photocard.png', badge: null, pledgeAmount: 200, stock: '상시 판매',
     highlight: false, includes: ['미공개 셀카 포토카드 2종'],
   },
   {
     id: 'photocard-binder', name: '포토카드 바인더', price: 15, priceKRW: 20000,
-    image: '/fankit.jpg', badge: 'NEW', pledgeAmount: 500, stock: '상시 판매',
+    image: '/product-binder.png', badge: 'NEW', pledgeAmount: 500, stock: '상시 판매',
     highlight: false, includes: ['공식 바인더 (20매 수납)', '포토카드 슬리브 20장'],
   },
   {
     id: 'slogan', name: '공식 응원 슬로건', price: 10, priceKRW: 13000,
-    image: '/fankit.jpg', badge: null, pledgeAmount: 300, stock: '상시 판매',
+    image: '/product-slogan.png', badge: null, pledgeAmount: 300, stock: '상시 판매',
     highlight: false, includes: ['양면 슬로건 (반짝이 원단)'],
   },
   {
     id: 'tshirt', name: 'PALMATE 공식 티셔츠', price: 25, priceKRW: 34000,
-    image: '/fankit.jpg', badge: null, pledgeAmount: 800, stock: '상시 판매',
+    image: '/product-tshirt.png', badge: null, pledgeAmount: 800, stock: '상시 판매',
     highlight: false, includes: ['면 100% 오버핏', '뒷면 PALMATE 로고'],
   },
 ];

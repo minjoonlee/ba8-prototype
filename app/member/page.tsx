@@ -8,7 +8,7 @@ function BoaAvatar({ size = 'md' }: { size?: 'sm' | 'md' }) {
   const s = size === 'sm' ? 'w-9 h-9' : 'w-11 h-11';
   return (
     <div className={`${s} rounded-full bg-gradient-to-br from-yellow-400 to-amber-500 flex items-center justify-center border-2 border-yellow-400 shadow-lg overflow-hidden relative`}>
-      <img src="/bapal-logo.jpg" alt="BoA" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+      <img src="/boa-avatar.png" alt="BoA" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
       <span className="text-black font-black text-sm absolute">B</span>
     </div>
   );
