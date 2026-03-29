@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import BottomNav from '../components/BottomNav';
+import PalmateCharacter from '../components/PalmateCharacter';
 
 function BoaAvatar({ size = 'md' }: { size?: 'sm' | 'md' }) {
   const s = size === 'sm' ? 'w-9 h-9' : 'w-11 h-11';
@@ -14,15 +15,16 @@ function BoaAvatar({ size = 'md' }: { size?: 'sm' | 'md' }) {
   );
 }
 
-function PalAvatar({ number, name }: { number: string; name: string }) {
-  const colors = ['from-purple-500 to-indigo-600', 'from-pink-500 to-rose-600', 'from-cyan-500 to-blue-600', 'from-emerald-500 to-green-600'];
-  const colorIdx = parseInt(number.replace(/\D/g, '')) % colors.length;
+// Palmate avatar with mini character
+function PalAvatar({ color }: { color: string }) {
   return (
-    <div className={`w-9 h-9 rounded-full bg-gradient-to-br ${colors[colorIdx]} flex items-center justify-center text-white text-xs font-bold shadow-inner`}>
-      {name.substring(0, 2).toUpperCase()}
+    <div className={`w-9 h-9 rounded-full bg-gradient-to-br ${color} flex items-center justify-center overflow-hidden relative border border-white/10`}>
+      <PalmateCharacter className="w-10 h-10 absolute translate-y-1" />
     </div>
   );
 }
+
+const PAL_COLORS = ['from-purple-600 to-indigo-800', 'from-pink-600 to-rose-800', 'from-cyan-600 to-blue-800', 'from-emerald-600 to-green-800'];
 
 const OFFICIAL_POSTS = [
   { id: 1, time: '10분 전', text: '스태프들 안녕! 오늘 저녁 메뉴 추천해줘! 달콤한 게 땡기는데... 💛', likes: '1.2K', comments: '842' },
@@ -30,9 +32,18 @@ const OFFICIAL_POSTS = [
 ];
 
 const FAN_POSTS = [
-  { id: 1, name: 'BoA Fan 99', number: '#0215', time: '1시간 전', text: '오피셜 굿즈 드디어 도착!! 키링 너무 귀엽다 ㅠㅠ #PALMATE #굿즈언박싱', likes: '15', comments: '2' },
-  { id: 2, name: 'Yellow Heart', number: '#0081', time: '3시간 전', text: '팔메이트 오늘 기분 좋아보이네! 저녁으로 케이크 어때? 🍰', likes: '8', comments: '1' },
-  { id: 3, name: 'PAL_Oasis99', number: '#0044', time: '5시간 전', text: 'KAVE에서 응원봉 투표 완료! A안 클래식 스퀘어 밀었습니다 💪', likes: '32', comments: '5' },
+  { id: 1, name: 'BoA Fan 99', number: '#0215', level: 44, title: 'Master', time: '1시간 전', text: '오피셜 굿즈 드디어 도착!! 키링 너무 귀엽다 ㅠㅠ #PALMATE #굿즈언박싱', likes: '15', comments: '2', colorIdx: 0 },
+  { id: 2, name: 'Yellow Heart', number: '#0081', level: 12, title: 'Rookie', time: '3시간 전', text: '팔메이트 오늘 기분 좋아보이네! 저녁으로 케이크 어때? 🍰', likes: '8', comments: '1', colorIdx: 1 },
+  { id: 3, name: 'PAL_Oasis99', number: '#0044', level: 31, title: 'Veteran', time: '5시간 전', text: 'KAVE에서 응원봉 투표 완료! A안 클래식 스퀘어 밀었습니다 💪', likes: '32', comments: '5', colorIdx: 2 },
+];
+
+const MEDIA_POSTS = [
+  { id: 1, image: '/pc-onlyone.png', caption: 'Only One 포토카드 인증!', user: 'BoA Fan 99', number: '#0215', level: 44, colorIdx: 0, likes: '48' },
+  { id: 2, image: '/pc-starrynight.png', caption: 'Starry Night 드디어 겟!! 교환 성공', user: 'PAL_Oasis99', number: '#0044', level: 31, colorIdx: 2, likes: '72' },
+  { id: 3, image: '/content-letter.png', caption: 'BoA 손편지 너무 감동 ㅠㅠ', user: 'Yellow Heart', number: '#0081', level: 12, colorIdx: 1, likes: '103' },
+  { id: 4, image: '/product-lightstick.png', caption: '응원봉 도착!! 예쁘다', user: 'PAL_Star', number: '#0312', level: 8, colorIdx: 3, likes: '29' },
+  { id: 5, image: '/fankit.jpg', caption: '1기 팬키트 언박싱', user: 'BoA Fan 99', number: '#0215', level: 44, colorIdx: 0, likes: '156' },
+  { id: 6, image: '/content-practice.png', caption: '안무 연습 영상 캡쳐 떠봤어요', user: 'Yellow Heart', number: '#0081', level: 12, colorIdx: 1, likes: '41' },
 ];
 
 export default function MemberPage() {
@@ -104,6 +115,8 @@ export default function MemberPage() {
 
           {/* Feed Content */}
           <div className="py-5 space-y-4">
+
+            {/* BoA Official */}
             {activeTab === 'boa' && (
               <div className="space-y-4 animate-fade-in-up">
                 {OFFICIAL_POSTS.map((post) => (
@@ -136,17 +149,20 @@ export default function MemberPage() {
               </div>
             )}
 
+            {/* Palmate Feed */}
             {activeTab === 'palmate' && (
               <div className="space-y-4 animate-fade-in-up">
                 <p className="text-xs text-zinc-500 mb-2">Palmate = BoA의 팬덤. 각 번호가 여러분입니다.</p>
                 {FAN_POSTS.map((post) => (
                   <div key={post.id} className="bg-zinc-900/40 border border-zinc-800/50 rounded-2xl p-4">
                     <div className="flex items-center gap-3 mb-3">
-                      <PalAvatar number={post.number} name={post.name} />
+                      <PalAvatar color={PAL_COLORS[post.colorIdx]} />
                       <div className="flex-1">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 flex-wrap">
                           <span className="font-bold text-white text-sm">{post.name}</span>
                           <span className="text-[10px] text-zinc-500 font-mono bg-zinc-800 px-1.5 py-0.5 rounded">{post.number}</span>
+                          <span className="text-[9px] font-bold text-yellow-400/80 bg-yellow-400/10 px-1.5 py-0.5 rounded font-mono">Lv.{post.level}</span>
+                          <span className="text-[9px] text-zinc-500 bg-zinc-800/60 px-1.5 py-0.5 rounded">{post.title}</span>
                         </div>
                         <span className="text-xs text-zinc-500">{post.time}</span>
                       </div>
@@ -167,15 +183,31 @@ export default function MemberPage() {
               </div>
             )}
 
+            {/* Media Tab */}
             {activeTab === 'media' && (
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3 animate-fade-in-up">
-                {[1, 2, 3, 4, 5, 6].map((i) => (
-                  <div key={i} className="aspect-square bg-zinc-900 rounded-xl border border-zinc-800/50 relative group cursor-pointer overflow-hidden">
-                    <div className="absolute inset-0 flex items-center justify-center text-4xl opacity-40 group-hover:scale-110 transition-transform">
-                      {i % 2 === 0 ? '📽️' : '📸'}
+                {MEDIA_POSTS.map((post) => (
+                  <div key={post.id} className="rounded-xl border border-zinc-800/50 overflow-hidden group cursor-pointer hover:border-yellow-400/30 transition">
+                    {/* Image */}
+                    <div className="aspect-square bg-zinc-900 relative overflow-hidden">
+                      <img src={post.image} alt={post.caption} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                      {/* Likes */}
+                      <div className="absolute bottom-2 right-2 bg-black/50 backdrop-blur rounded-full px-2 py-0.5 flex items-center gap-1">
+                        <svg className="w-3 h-3 text-red-400" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" /></svg>
+                        <span className="text-[10px] text-white font-bold">{post.likes}</span>
+                      </div>
                     </div>
-                    <div className="absolute bottom-2 left-2 bg-black/60 rounded px-2 py-0.5 text-[10px] text-white backdrop-blur">
-                      BoA Note #{i}
+                    {/* User info */}
+                    <div className="p-2.5 bg-zinc-900/60">
+                      <p className="text-[10px] text-zinc-300 line-clamp-1 mb-1.5">{post.caption}</p>
+                      <div className="flex items-center gap-1.5">
+                        <div className={`w-5 h-5 rounded-full bg-gradient-to-br ${PAL_COLORS[post.colorIdx]} flex items-center justify-center overflow-hidden relative`}>
+                          <PalmateCharacter className="w-6 h-6 absolute translate-y-0.5" />
+                        </div>
+                        <span className="text-[9px] text-zinc-400 font-bold truncate">{post.user}</span>
+                        <span className="text-[8px] text-yellow-400/70 font-mono font-bold ml-auto">Lv.{post.level}</span>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -187,7 +219,6 @@ export default function MemberPage() {
         {/* Desktop Sidebar */}
         <aside className="hidden md:block w-72 lg:w-80 pt-6 space-y-4">
           <div className="sticky top-[65px] space-y-4">
-            {/* Quick Links */}
             <div className="bg-zinc-900/40 border border-zinc-800/50 rounded-2xl p-5">
               <h3 className="text-sm font-bold mb-3 text-zinc-300">바로가기</h3>
               <div className="space-y-2">
@@ -215,7 +246,6 @@ export default function MemberPage() {
               </div>
             </div>
 
-            {/* Pledge Info */}
             <div className="bg-zinc-900/40 border border-zinc-800/50 rounded-2xl p-5">
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-yellow-400 font-bold text-sm">MY Pledge</span>
@@ -227,7 +257,6 @@ export default function MemberPage() {
         </aside>
       </div>
 
-      {/* Bottom Nav - mobile only */}
       <div className="pb-24 md:pb-0">
         <BottomNav />
       </div>
