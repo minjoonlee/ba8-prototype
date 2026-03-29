@@ -2,226 +2,177 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import BottomNav from '../components/BottomNav';
 
 const PRODUCTS = [
   {
-    id: 'fankit-gen1',
-    name: '1기 PAL 팬키트 (Pledge)',
-    price: 40,
-    priceKRW: 52000,
-    image: '/fankit.jpg',
-    badge: '1기 한정',
-    stock: '5,000개 한정 / 5월 초 판매',
-    includes: [
-      'PALMATE STAFF 사원증 (NFC)',
-      '박스 캐릭터 키링',
-      'Lyrics Stickers',
-      'FOUNDING MEMBER 카드',
-      'PALMATE 스티커',
-      '환영 편지 (BoA 친필 서명)'
-    ],
-    highlight: true
+    id: 'fankit-gen1', name: '1기 PALMATE 팬키트', price: 40, priceKRW: 55000,
+    image: '/fankit.jpg', badge: '1기 한정', pledgeAmount: 1000, stock: '5,000개 한정',
+    highlight: true, includes: ['PALMATE STAFF 사원증 (NFC)', '박스 캐릭터 키링', '가입 인증서'],
+  },
+  {
+    id: 'lightstick', name: 'PALMATE 공식 응원봉', price: 35, priceKRW: 48000,
+    image: '/fankit.jpg', badge: '인기', pledgeAmount: 1500, stock: '상시 판매',
+    highlight: false, includes: ['공식 응원봉', '오프라인 콘서트 연동'],
+  },
+  {
+    id: 'photocard-pack', name: '랜덤 포토카드 팩', price: 5, priceKRW: 6500,
+    image: '/fankit.jpg', badge: null, pledgeAmount: 200, stock: '상시 판매',
+    highlight: false, includes: ['미공개 셀카 포토카드 2종'],
+  },
+  {
+    id: 'photocard-binder', name: '포토카드 바인더', price: 15, priceKRW: 20000,
+    image: '/fankit.jpg', badge: 'NEW', pledgeAmount: 500, stock: '상시 판매',
+    highlight: false, includes: ['공식 바인더 (20매 수납)', '포토카드 슬리브 20장'],
+  },
+  {
+    id: 'slogan', name: '공식 응원 슬로건', price: 10, priceKRW: 13000,
+    image: '/fankit.jpg', badge: null, pledgeAmount: 300, stock: '상시 판매',
+    highlight: false, includes: ['양면 슬로건 (반짝이 원단)'],
+  },
+  {
+    id: 'tshirt', name: 'PALMATE 공식 티셔츠', price: 25, priceKRW: 34000,
+    image: '/fankit.jpg', badge: null, pledgeAmount: 800, stock: '상시 판매',
+    highlight: false, includes: ['면 100% 오버핏', '뒷면 PALMATE 로고'],
   },
 ];
 
 export default function ShopPage() {
-  const [cart, setCart] = useState<string[]>([]);
-
-  const addToCart = (id: string) => {
-    setCart([...cart, id]);
-  };
+  const [expandedId, setExpandedId] = useState<string | null>(null);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-zinc-950 via-black to-zinc-950 text-white">
+    <div className="min-h-screen bg-zinc-950 text-white font-sans">
+
       {/* Header */}
-      <header className="border-b border-zinc-800/40 backdrop-blur-md bg-black/60 sticky top-0 z-50">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-zinc-950 border border-zinc-700/40 flex items-center justify-center shadow-lg">
-                <img src="/bapal-logo.jpg" alt="BApal" className="w-7 h-7 rounded-full object-cover" />
-              </div>
-              <h1 className="text-xl font-bold tracking-tight" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>
-                BApal Shop
-              </h1>
-            </Link>
-            <div className="relative">
-              <button className="w-10 h-10 rounded-full bg-zinc-900/50 border border-zinc-700/40 flex items-center justify-center hover:border-yellow-400/50 transition">
-                <span className="text-xl">🛒</span>
-              </button>
-              {cart.length > 0 && (
-                <div className="absolute -top-1 -right-1 w-5 h-5 bg-yellow-400 rounded-full flex items-center justify-center">
-                  <span className="text-xs text-black font-bold">{cart.length}</span>
-                </div>
-              )}
+      <div className="sticky top-0 z-40 bg-zinc-950/90 backdrop-blur-md border-b border-zinc-800/50">
+        <div className="max-w-5xl mx-auto px-5 md:px-8 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Link href="/member" className="hidden md:block text-xs text-zinc-500 hover:text-white transition">← 홈</Link>
+            <h1 className="text-lg font-black tracking-tight text-yellow-400">Pledge Shop</h1>
+          </div>
+          <div className="flex items-center gap-1.5 bg-zinc-900 border border-zinc-800 px-3 py-1 rounded-full">
+            <span className="text-[10px] text-zinc-400 font-bold">MY</span>
+            <span className="text-xs font-black text-yellow-400 font-mono">1,000 P</span>
+          </div>
+        </div>
+      </div>
+
+      <main className="max-w-5xl mx-auto px-5 md:px-8 py-5">
+
+        {/* Pledge Banner */}
+        <div className="mb-6 p-4 bg-gradient-to-r from-yellow-400/10 via-yellow-400/5 to-transparent border border-yellow-400/20 rounded-2xl">
+          <div className="flex items-center gap-3 mb-2">
+            <span className="text-xl">🎫</span>
+            <div>
+              <h2 className="text-base font-bold">굿즈를 사면 Pledge가!</h2>
+              <p className="text-xs text-zinc-400">모든 상품 구매 시 Pledge(투표권)가 함께 지급됩니다</p>
             </div>
           </div>
-        </div>
-      </header>
-
-      <main className="container mx-auto px-6 py-16">
-        {/* Hero */}
-        <div className="text-center space-y-4 mb-12">
-          <div className="inline-flex items-center gap-2 bg-yellow-400/10 border border-yellow-400/30 rounded-full px-4 py-2">
-            <span className="text-sm font-semibold text-yellow-400">🎁 1기 PAL 모집</span>
+          <div className="flex items-center gap-4 text-[10px] text-zinc-500 mt-2 pl-9">
+            <span>KAVE 투표 참여</span>
+            <span className="text-zinc-700">|</span>
+            <span>콘서트 선예매</span>
+            <span className="text-zinc-700">|</span>
+            <span>포토카드 교환</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold">
-            팬키트 구매
-          </h1>
-          <p className="text-zinc-400">
-            Pledge를 획득하고 KAVE에 입장하세요<br />
-            <span className="text-sm text-zinc-500">5월 초 판매 시작 / 5,000개 한정</span>
-          </p>
         </div>
 
-        {/* Products Grid */}
-        <div className="max-w-4xl mx-auto">
+        {/* Product Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {PRODUCTS.map((product) => (
-            <div
-              key={product.id}
-              className={`bg-zinc-900/30 border-2 rounded-3xl overflow-hidden transition ${
-                product.highlight
-                  ? 'border-yellow-400/40 shadow-2xl shadow-yellow-400/20'
-                  : 'border-zinc-800/50 hover:border-yellow-400/30'
-              }`}
-            >
-              <div className="grid md:grid-cols-2 gap-6">
-                {/* Image */}
-                <div className="relative aspect-square bg-zinc-900/50 overflow-hidden">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover"
-                  />
-                  {product.badge && (
-                    <div className="absolute top-4 left-4 px-4 py-2 bg-yellow-400 text-black text-sm font-bold rounded-full shadow-lg">
-                      {product.badge}
-                    </div>
-                  )}
+            <div key={product.id} className={`rounded-2xl border bg-zinc-900/30 overflow-hidden transition-all hover:border-yellow-400/30 ${product.highlight ? 'border-yellow-400/40' : 'border-zinc-800/60'}`}>
+
+              {/* Image */}
+              <div className="relative aspect-[4/3] bg-zinc-800 overflow-hidden">
+                <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                {/* Pledge Badge - 크게 표시 */}
+                <div className="absolute bottom-3 right-3 bg-yellow-400 text-black px-2.5 py-1 rounded-lg shadow-lg flex items-center gap-1">
+                  <span className="text-[10px]">🎫</span>
+                  <span className="text-xs font-black font-mono">+{product.pledgeAmount.toLocaleString()} P</span>
+                </div>
+                {product.badge && (
+                  <div className="absolute top-3 left-3 px-2 py-0.5 bg-zinc-900/80 backdrop-blur text-white text-[10px] font-bold rounded-lg border border-zinc-700">
+                    {product.badge}
+                  </div>
+                )}
+              </div>
+
+              {/* Info */}
+              <div className="p-4">
+                <h3 className="font-bold text-sm mb-1">{product.name}</h3>
+                <div className="flex items-baseline gap-2 mb-3">
+                  <span className="text-lg font-bold text-white">${product.price}</span>
+                  <span className="text-zinc-500 text-xs">(₩{product.priceKRW.toLocaleString()})</span>
+                  <span className="text-[10px] text-zinc-600 ml-auto">{product.stock}</span>
                 </div>
 
-                {/* Content */}
-                <div className="p-8 flex flex-col justify-between">
-                  <div className="space-y-6">
-                    <div>
-                      <h3 className="font-bold text-2xl mb-3">{product.name}</h3>
-                      <div className="flex items-baseline gap-3">
-                        <div className="text-4xl font-bold text-yellow-400">
-                          ${product.price}
-                        </div>
-                        <div className="text-lg text-zinc-500">
-                          (₩{product.priceKRW?.toLocaleString()})
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="p-4 bg-yellow-400/10 border border-yellow-400/30 rounded-xl">
-                      <div className="text-sm text-yellow-400 font-semibold mb-1">판매 일정</div>
-                      <div className="text-xs text-zinc-400">{product.stock}</div>
-                    </div>
-
-                    {/* Includes */}
-                    <div>
-                      <div className="text-sm font-semibold mb-3 text-zinc-300">구성품</div>
-                      <div className="space-y-2">
-                        {product.includes.map((item, i) => (
-                          <div key={i} className="flex items-center gap-3 text-sm text-zinc-400">
-                            <div className="w-5 h-5 rounded-full bg-yellow-400/10 border border-yellow-400/30 flex items-center justify-center flex-shrink-0">
-                              <span className="text-yellow-400 text-xs">✓</span>
-                            </div>
-                            <span>{item}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-3 mt-6">
-                    <button
-                      onClick={() => addToCart(product.id)}
-                      className="w-full py-4 bg-yellow-400 hover:bg-yellow-500 text-black rounded-xl transition font-bold shadow-lg shadow-yellow-400/20"
-                    >
-                      사전 알림 신청
-                    </button>
-                    <p className="text-xs text-center text-zinc-500">
-                      5월 초 판매 시작 시 이메일로 알려드립니다
-                    </p>
+                {/* Pledge reward highlight */}
+                <div className="flex items-center gap-2 p-2 bg-yellow-400/5 border border-yellow-400/15 rounded-lg mb-3">
+                  <span className="text-sm">🎫</span>
+                  <div className="flex-1">
+                    <span className="text-[10px] text-zinc-400">구매 시 </span>
+                    <span className="text-xs font-bold text-yellow-400">{product.pledgeAmount.toLocaleString()} Pledge</span>
+                    <span className="text-[10px] text-zinc-400"> 즉시 지급</span>
                   </div>
                 </div>
+
+                {/* Toggle detail */}
+                <button
+                  onClick={() => setExpandedId(expandedId === product.id ? null : product.id)}
+                  className="text-[11px] text-zinc-500 hover:text-yellow-400 transition mb-3"
+                >
+                  {expandedId === product.id ? '접기 ↑' : '구성품 보기 ↓'}
+                </button>
+
+                {expandedId === product.id && (
+                  <div className="mb-3 animate-fade-in-up">
+                    <div className="space-y-1.5">
+                      {product.includes.map((item, i) => (
+                        <div key={i} className="flex items-center gap-2 text-xs text-zinc-300">
+                          <span className="text-yellow-400 text-[10px]">✓</span>
+                          <span>{item}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <Link href="/shop/checkout"
+                  className={`block text-center w-full py-2.5 rounded-xl transition font-bold text-sm ${
+                    product.highlight
+                      ? 'bg-yellow-400 hover:bg-yellow-300 text-black'
+                      : 'bg-zinc-800 hover:bg-zinc-700 text-white border border-zinc-700'
+                  }`}>
+                  구매하기
+                </Link>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Pledge Info */}
-        <div className="mt-16 max-w-3xl mx-auto space-y-6">
-          <div className="p-6 bg-gradient-to-br from-yellow-400/10 to-amber-400/5 border border-yellow-400/30 rounded-2xl">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-full bg-yellow-400/20 flex items-center justify-center flex-shrink-0">
-                <span className="text-2xl">🎫</span>
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold mb-2">Pledge란?</h3>
-                <p className="text-sm text-zinc-400 mb-3">
-                  팬키트를 구매하면 NFC/QR 사원증에 고유 번호가 부여됩니다.<br />
-                  이것이 바로 당신의 <span className="text-yellow-400 font-semibold">Pledge</span>입니다.
-                </p>
-                <div className="space-y-2 text-sm text-zinc-500">
-                  <div className="flex items-center gap-2">
-                    <span className="text-yellow-400">✓</span>
-                    <span>KAVE 입장권</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-yellow-400">✓</span>
-                    <span>투표권 (1 Pledge = 1 Vote)</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-yellow-400">✓</span>
-                    <span>독점 콘텐츠 열람권</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="p-6 bg-zinc-900/30 border border-zinc-800/30 rounded-2xl">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0">
-                <span className="text-2xl">📱</span>
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold mb-2">인증 방법</h3>
-                <p className="text-sm text-zinc-400 mb-3">
-                  팬키트 수령 후 NFC 사원증을 스마트폰에 태그하거나,<br />
-                  QR 코드를 스캔하여 KAVE에 입장하세요.
-                </p>
-                <Link
-                  href="/kave"
-                  className="inline-block text-sm text-yellow-400 hover:text-yellow-300 transition border-b border-yellow-400/50 hover:border-yellow-300/50 pb-0.5"
-                >
-                  KAVE 미리보기 →
-                </Link>
-              </div>
-            </div>
+        {/* How Pledge Works */}
+        <div className="mt-10 max-w-2xl mx-auto">
+          <h3 className="text-sm font-bold text-zinc-400 text-center mb-4">Pledge는 이렇게 쓸 수 있어요</h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {[
+              { icon: '🗳️', title: '투표', desc: 'BoA 활동 결정에 참여' },
+              { icon: '🎤', title: '콘서트 선예매', desc: '일반 예매보다 72시간 먼저' },
+              { icon: '🃏', title: '포토카드 교환', desc: '원하는 카드를 교환' },
+              { icon: '📚', title: '컬렉션 보상', desc: '풀 컬렉션 시 매월 보상' },
+            ].map((item) => (
+              <Link href="/kave" key={item.title} className="p-3 bg-zinc-900/40 border border-zinc-800/40 rounded-xl text-center hover:border-yellow-400/30 transition">
+                <div className="text-xl mb-1">{item.icon}</div>
+                <h4 className="text-xs font-bold mb-0.5">{item.title}</h4>
+                <p className="text-[9px] text-zinc-500">{item.desc}</p>
+              </Link>
+            ))}
           </div>
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-zinc-800/30 mt-20">
-        <div className="container mx-auto px-6 py-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-xs text-zinc-600">
-              © 2024 BApal Entertainment. Always with BoA.
-            </p>
-            <div className="flex gap-6 text-xs text-zinc-600">
-              <a href="#" className="hover:text-zinc-400 transition-colors">배송 안내</a>
-              <a href="#" className="hover:text-zinc-400 transition-colors">교환/환불</a>
-              <a href="#" className="hover:text-zinc-400 transition-colors">고객센터</a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <div className="pb-24 md:pb-0">
+        <BottomNav />
+      </div>
     </div>
   );
 }
