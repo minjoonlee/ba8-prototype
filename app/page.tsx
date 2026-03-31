@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 
 const FANDOM_CANDIDATES = [
   { id: 'bestie', name: 'Bestie (베스티)' },
-  { id: 'jumpingboa', name: '점핑보아' },
+  { id: 'jumpingboa', name: 'Jumping BoA (점핑보아)' },
   { id: 'peaceb', name: 'Peace B (피스비)' },
 ];
 
@@ -18,7 +18,7 @@ export default function Home() {
 
   // Check localStorage on mount
   useEffect(() => {
-    const saved = localStorage.getItem('ba8_vote');
+    const saved = localStorage.getItem('bapal_vote');
     if (saved) setVoted(saved);
   }, []);
 
@@ -62,11 +62,11 @@ export default function Home() {
         });
       }
 
-      localStorage.setItem('ba8_vote', confirmTarget);
+      localStorage.setItem('bapal_vote', confirmTarget);
       setVoted(confirmTarget);
     } catch {
       // Still save locally even if sheet fails
-      localStorage.setItem('ba8_vote', confirmTarget);
+      localStorage.setItem('bapal_vote', confirmTarget);
       setVoted(confirmTarget);
     }
 
@@ -81,13 +81,13 @@ export default function Home() {
       <div className="flex flex-col items-center gap-8 w-full max-w-md">
         {/* Logo */}
         <div className="w-32 h-32 md:w-40 md:h-40 flex items-center justify-center">
-          <img src="/ba8-logo.png" alt="BA8 Entertainment" className="w-full h-full object-contain mix-blend-lighten" />
+          <img src="/ba8-logo.png" alt="BApal Entertainment" className="w-full h-full object-contain mix-blend-lighten" />
         </div>
 
         {/* Name */}
         <div className="text-center">
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>
-            BA8
+            BApal
           </h1>
           <p className="text-[10px] md:text-xs text-zinc-600 tracking-[0.4em] uppercase mt-2">
             Entertainment
@@ -154,7 +154,7 @@ export default function Home() {
 
       {/* Footer */}
       <p className="mt-16 text-[10px] text-zinc-700">
-        © 2026 BA8 Entertainment
+        © 2026 BApal Entertainment
       </p>
 
       {/* Confirm Modal */}
