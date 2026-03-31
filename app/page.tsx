@@ -152,7 +152,7 @@ export default function Home() {
 
       {/* Footer */}
       <p className="mt-16 text-[10px] text-zinc-700">
-        © 2025 BA8 Entertainment
+        © 2026 BA8 Entertainment
       </p>
 
       {/* Confirm Modal */}
