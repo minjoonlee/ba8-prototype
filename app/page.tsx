@@ -8,7 +8,7 @@ const FANDOM_CANDIDATES = [
   { id: 'peaceb', name: 'Peace B (피스비)' },
 ];
 
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxwKkBVn6GrbjnON-GFVuWYr8AsUXcLdBsGSzsPqc0Y6yLqQ7xKB0l3ymnCSygITbmjwg/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwVm06-d2hb5OpRDb8216kpc_Lj3H_Dslx6yyvEg2iduJ3Yl0phGUbc7I0kWiftRrq0IA/exec';
 
 export default function Home() {
   const [voted, setVoted] = useState<string | null>(null);
@@ -43,10 +43,13 @@ export default function Home() {
       // Send to Google Sheets via image ping (bypasses CORS)
       if (GOOGLE_SCRIPT_URL) {
         const candidate = FANDOM_CANDIDATES.find(c => c.id === confirmTarget);
+        const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
         const params = new URLSearchParams({
           vote: candidate?.name || confirmTarget,
           ip,
           timestamp: new Date().toISOString(),
+          device: isMobile ? 'Mobile' : 'Desktop',
+          userAgent: navigator.userAgent,
         });
         const url = `${GOOGLE_SCRIPT_URL}?${params.toString()}`;
         console.log('Sending vote to:', url);
