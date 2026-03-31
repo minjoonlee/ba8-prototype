@@ -81,7 +81,7 @@ export default function Home() {
       <div className="flex flex-col items-center gap-8 w-full max-w-md">
         {/* Logo */}
         <div className="w-32 h-32 md:w-40 md:h-40 flex items-center justify-center">
-          <img src="/ba8-logo.png" alt="BApal Entertainment" className="w-full h-full object-contain mix-blend-lighten" />
+          <img src="/bapal-logo-new.png" alt="BApal Entertainment" className="w-full h-full object-contain" />
         </div>
 
         {/* Name */}
