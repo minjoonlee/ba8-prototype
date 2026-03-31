@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
 const FANDOM_CANDIDATES = [
   { id: 'bestie', name: 'Bestie (베스티)' },
@@ -8,7 +9,7 @@ const FANDOM_CANDIDATES = [
   { id: 'peaceb', name: 'Peace B (피스비)' },
 ];
 
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwVm06-d2hb5OpRDb8216kpc_Lj3H_Dslx6yyvEg2iduJ3Yl0phGUbc7I0kWiftRrq0IA/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxuSwG_XEyuSLZMA5vX2y_054A8mfUN5kGewW6RC8n_Bk6Ze3vddvJFEWYHdJqo7sBdcg/exec';
 
 export default function Home() {
   const [voted, setVoted] = useState<string | null>(null);
@@ -16,10 +17,16 @@ export default function Home() {
   const [confirmTarget, setConfirmTarget] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  // Check localStorage on mount
+  const fpRef = useRef<string>('');
+
+  // Check localStorage + init fingerprint on mount
   useEffect(() => {
     const saved = localStorage.getItem('bapal_vote');
     if (saved) setVoted(saved);
+
+    FingerprintJS.load().then(fp => fp.get()).then(result => {
+      fpRef.current = result.visitorId;
+    });
   }, []);
 
   const handleVoteClick = (id: string) => {
@@ -47,6 +54,7 @@ export default function Home() {
         const params = new URLSearchParams({
           vote: candidate?.name || confirmTarget,
           ip,
+          fingerprint: fpRef.current || 'unknown',
           timestamp: new Date().toISOString(),
           device: isMobile ? 'Mobile' : 'Desktop',
           userAgent: navigator.userAgent,
