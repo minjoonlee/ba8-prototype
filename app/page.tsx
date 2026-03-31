@@ -3,9 +3,9 @@
 import { useState, useEffect } from 'react';
 
 const FANDOM_CANDIDATES = [
-  { id: 'bestie', name: 'Bestie (베스티)', desc: 'BoA의 가장 친한 친구, 우리' },
-  { id: 'jumpingboa', name: '점핑보아', desc: 'BoA와 함께 뛰는 에너지' },
-  { id: 'peaceb', name: 'Peace B (피스비)', desc: 'BoA와 함께하는 평화' },
+  { id: 'bestie', name: 'Bestie (베스티)' },
+  { id: 'jumpingboa', name: '점핑보아' },
+  { id: 'peaceb', name: 'Peace B (피스비)' },
 ];
 
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxwKkBVn6GrbjnON-GFVuWYr8AsUXcLdBsGSzsPqc0Y6yLqQ7xKB0l3ymnCSygITbmjwg/exec';
@@ -121,7 +121,6 @@ export default function Home() {
                   <div className="flex items-center justify-between">
                     <div>
                       <h4 className="font-bold text-sm">{opt.name}</h4>
-                      <p className="text-[10px] text-zinc-500 mt-0.5">{opt.desc}</p>
                     </div>
                     {isVoted && (
                       <span className="text-yellow-400 text-xs font-bold">투표 완료</span>
