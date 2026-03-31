@@ -42,9 +42,9 @@ const CITY_CANDIDATES = [
 ];
 
 const FANDOM_CANDIDATES = [
-  { id: 'palmate', name: 'PALMATE', desc: 'Always with BoA', finalVotes: 8400 },
-  { id: 'beatbox', name: 'BEATBOX', desc: "BoA's Energy & Rhythm", finalVotes: 4200 },
-  { id: 'no1crew', name: 'No.1 Crew', desc: 'Forever No.1 with BoA', finalVotes: 1200 },
+  { id: 'bestie', name: 'Bestie (베스티)', desc: 'BoA의 가장 친한 친구, 우리', votes: 0 },
+  { id: 'jumpingboa', name: '점핑보아', desc: 'BoA와 함께 뛰는 에너지', votes: 0 },
+  { id: 'peaceb', name: 'Peace B (피스비)', desc: 'BoA와 함께하는 평화', votes: 0 },
 ];
 
 const CONCERT_SCHEDULE = [
@@ -121,6 +121,7 @@ export default function KavePage() {
   const [voteTab, setVoteTab] = useState<'ongoing' | 'closed'>('ongoing');
   const [votedLightstick, setVotedLightstick] = useState<string | null>(null);
   const [votedCity, setVotedCity] = useState<string | null>(null);
+  const [votedFandom, setVotedFandom] = useState<string | null>(null);
   const [showToast, setShowToast] = useState(false);
   const [toastMsg, setToastMsg] = useState('');
   const [reservedConcert, setReservedConcert] = useState<string | null>(null);
@@ -238,34 +239,20 @@ export default function KavePage() {
               <p className="text-xs text-zinc-500">BoA의 여정에 직접 참여하세요</p>
             </div>
             <div className="flex gap-2 mb-5 max-w-xs">
-              <button onClick={() => setVoteTab('ongoing')} className={`flex-1 py-2 text-sm font-bold rounded-xl transition ${voteTab === 'ongoing' ? 'bg-yellow-400 text-black' : 'bg-zinc-900 border border-zinc-800 text-zinc-400'}`}>진행 중 (2)</button>
-              <button onClick={() => setVoteTab('closed')} className={`flex-1 py-2 text-sm font-bold rounded-xl transition ${voteTab === 'closed' ? 'bg-yellow-400 text-black' : 'bg-zinc-900 border border-zinc-800 text-zinc-400'}`}>마감됨 (1)</button>
+              <button onClick={() => setVoteTab('ongoing')} className={`flex-1 py-2 text-sm font-bold rounded-xl transition ${voteTab === 'ongoing' ? 'bg-yellow-400 text-black' : 'bg-zinc-900 border border-zinc-800 text-zinc-400'}`}>진행 중 (3)</button>
+              <button onClick={() => setVoteTab('closed')} className={`flex-1 py-2 text-sm font-bold rounded-xl transition ${voteTab === 'closed' ? 'bg-yellow-400 text-black' : 'bg-zinc-900 border border-zinc-800 text-zinc-400'}`}>마감됨</button>
             </div>
             {voteTab === 'ongoing' && (
               <div className="grid md:grid-cols-2 gap-4">
+                <VoteCard title="공식 팬덤명 투표" dday="D-7" desc="BoA 공식 팬덤 이름을 함께 정해요!" candidates={FANDOM_CANDIDATES} votedId={votedFandom} onVote={(id) => { setVotedFandom(id); toast('투표 완료!'); }} costLabel="10 P" />
                 <VoteCard title="공식 응원봉 디자인" dday="D-5" desc="어떤 응원봉이 가장 마음에 드시나요?" candidates={LIGHTSTICK_CANDIDATES} votedId={votedLightstick} onVote={(id) => handleVote('ls', id)} costLabel="20 P" />
                 <VoteCard title="1기 팬미팅 개최 도시" dday="D-12" desc="첫 번째 만남은 어디서?" candidates={CITY_CANDIDATES} votedId={votedCity} onVote={(id) => handleVote('city', id)} costLabel="50 P" />
               </div>
             )}
             {voteTab === 'closed' && (
               <div className="max-w-lg">
-                <div className="bg-zinc-900/30 rounded-2xl border border-zinc-800/50 p-5 opacity-80">
-                  <div className="flex items-center justify-between mb-1">
-                    <h3 className="font-bold text-sm text-zinc-300">공식 팬클럽 이름 투표</h3>
-                    <span className="text-[10px] font-bold text-zinc-500 bg-zinc-800 px-2 py-0.5 rounded">종료</span>
-                  </div>
-                  <p className="text-xs text-zinc-600 mb-3">1기 공식 이름을 투표로 결정했습니다.</p>
-                  <div className="space-y-2">
-                    {FANDOM_CANDIDATES.map((opt, idx) => (
-                      <div key={opt.id} className={`flex items-center justify-between p-3 rounded-xl border ${idx === 0 ? 'border-yellow-400/40 bg-yellow-400/5' : 'border-zinc-800/40 bg-zinc-900/20'}`}>
-                        <div className="flex items-center gap-2">
-                          {idx === 0 && <span className="text-yellow-500 text-sm">👑</span>}
-                          <div><h4 className={`font-bold text-sm ${idx === 0 ? 'text-yellow-400' : 'text-zinc-400'}`}>{opt.name}</h4><p className="text-[10px] text-zinc-600">{opt.desc}</p></div>
-                        </div>
-                        <span className={`text-xs font-mono font-bold ${idx === 0 ? 'text-yellow-400' : 'text-zinc-500'}`}>{opt.finalVotes.toLocaleString()} P</span>
-                      </div>
-                    ))}
-                  </div>
+                <div className="bg-zinc-900/30 rounded-2xl border border-zinc-800/50 p-5 text-center py-12">
+                  <p className="text-zinc-500 text-sm">아직 마감된 투표가 없습니다</p>
                 </div>
               </div>
             )}
