@@ -1,168 +1,189 @@
 'use client';
 
-import { useState } from 'react';
-import Link from 'next/link';
+import { useState, useEffect } from 'react';
+
+const FANDOM_CANDIDATES = [
+  { id: 'bestie', name: 'Bestie (베스티)', desc: 'BoA의 가장 친한 친구, 우리' },
+  { id: 'jumpingboa', name: '점핑보아', desc: 'BoA와 함께 뛰는 에너지' },
+  { id: 'peaceb', name: 'Peace B (피스비)', desc: 'BoA와 함께하는 평화' },
+];
+
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxwKkBVn6GrbjnON-GFVuWYr8AsUXcLdBsGSzsPqc0Y6yLqQ7xKB0l3ymnCSygITbmjwg/exec';
 
 export default function Home() {
-  const [isSimulatingNFC, setIsSimulatingNFC] = useState(false);
+  const [voted, setVoted] = useState<string | null>(null);
+  const [showKaveMsg, setShowKaveMsg] = useState(false);
+  const [confirmTarget, setConfirmTarget] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
-  const simulateNFC = () => {
-    setIsSimulatingNFC(true);
-    setTimeout(() => {
-      window.location.href = '/verify?nfc=BA8-001-00215';
-    }, 1500);
+  // Check localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('ba8_vote');
+    if (saved) setVoted(saved);
+  }, []);
+
+  const handleVoteClick = (id: string) => {
+    if (voted) return;
+    setConfirmTarget(id);
   };
 
+  const handleConfirm = async () => {
+    if (!confirmTarget) return;
+    setSubmitting(true);
+
+    try {
+      // Get IP
+      let ip = 'unknown';
+      try {
+        const res = await fetch('https://api.ipify.org?format=json');
+        const data = await res.json();
+        ip = data.ip;
+      } catch {}
+
+      // Send to Google Sheets via image ping (bypasses CORS)
+      if (GOOGLE_SCRIPT_URL) {
+        const candidate = FANDOM_CANDIDATES.find(c => c.id === confirmTarget);
+        const params = new URLSearchParams({
+          vote: candidate?.name || confirmTarget,
+          ip,
+          timestamp: new Date().toISOString(),
+        });
+        const url = `${GOOGLE_SCRIPT_URL}?${params.toString()}`;
+        console.log('Sending vote to:', url);
+        await new Promise<void>((resolve) => {
+          const img = new Image();
+          img.onload = () => { console.log('Vote sent OK'); resolve(); };
+          img.onerror = () => { console.log('Vote sent (img error expected)'); resolve(); };
+          img.src = url;
+          setTimeout(resolve, 3000);
+        });
+      }
+
+      localStorage.setItem('ba8_vote', confirmTarget);
+      setVoted(confirmTarget);
+    } catch {
+      // Still save locally even if sheet fails
+      localStorage.setItem('ba8_vote', confirmTarget);
+      setVoted(confirmTarget);
+    }
+
+    setConfirmTarget(null);
+    setSubmitting(false);
+  };
+
+  const confirmName = FANDOM_CANDIDATES.find(c => c.id === confirmTarget)?.name;
+
   return (
-    <div className="min-h-screen bg-zinc-950 text-white font-sans">
-      {/* Header */}
-      <header className="border-b border-zinc-800/40 backdrop-blur-md bg-zinc-950/80 sticky top-0 z-50">
-        <div className="max-w-5xl mx-auto px-5 md:px-8 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-zinc-900 border border-zinc-700/40 flex items-center justify-center overflow-hidden">
-              <img src="/bapal-logo.jpg" alt="BApal" className="w-7 h-7 rounded-full object-cover" />
-            </div>
-            <h1 className="text-lg font-bold tracking-tight" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>
-              BApal
-            </h1>
-          </div>
-          <nav className="flex items-center gap-6">
-            <Link href="/kave" className="hidden md:block text-sm text-zinc-400 hover:text-yellow-400 transition font-medium">KAVE</Link>
-            <Link href="/shop" className="hidden md:block text-sm text-zinc-400 hover:text-white transition font-medium">Shop</Link>
-            <Link href="/member" className="text-xs md:text-sm text-zinc-400 hover:text-white transition">
-              입장하기 →
-            </Link>
-          </nav>
+    <div className="min-h-screen bg-zinc-950 text-white font-sans flex flex-col items-center justify-center px-5 py-16">
+      <div className="flex flex-col items-center gap-8 w-full max-w-md">
+        {/* Logo */}
+        <div className="w-32 h-32 md:w-40 md:h-40 flex items-center justify-center">
+          <img src="/ba8-logo.png" alt="BA8 Entertainment" className="w-full h-full object-contain mix-blend-lighten" />
         </div>
-      </header>
 
-      <main className="max-w-5xl mx-auto px-5 md:px-8">
-
-        {/* Hero Section */}
-        <section className="py-12 md:py-20 lg:py-28">
-          <div className="md:flex md:items-center md:justify-between md:gap-16">
-            {/* Left: Branding */}
-            <div className="text-center md:text-left md:flex-1">
-              <div className="flex flex-col items-center md:items-start gap-3 mb-5">
-                <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-zinc-900 border border-zinc-800/60 flex items-center justify-center shadow-xl shadow-yellow-400/10 ring-1 ring-yellow-400/10 overflow-hidden">
-                  <img src="/bapal-logo.jpg" alt="BApal" className="w-14 h-14 md:w-16 md:h-16 rounded-full object-cover" />
-                </div>
-                <div>
-                  <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>
-                    <span className="text-white">BA</span><span className="text-zinc-400">pal</span>
-                  </h2>
-                  <p className="text-[10px] md:text-xs text-zinc-600 tracking-[0.3em] uppercase mt-1">Entertainment</p>
-                </div>
-              </div>
-
-              <p className="text-sm md:text-base text-zinc-400 mb-4">
-                2000년부터 함께한 아시아의 별<br />
-                <span className="text-yellow-400 font-semibold">Always with BoA</span>
-              </p>
-
-              <div className="inline-flex items-center gap-4 text-xs bg-zinc-900/50 border border-zinc-800/50 rounded-full px-4 py-2">
-                <div className="text-center">
-                  <div className="text-yellow-400 font-bold">24+</div>
-                  <div className="text-zinc-600 text-[10px]">Years</div>
-                </div>
-                <div className="w-px h-5 bg-zinc-700"></div>
-                <div className="text-center">
-                  <div className="text-yellow-400 font-bold">5,000</div>
-                  <div className="text-zinc-600 text-[10px]">한정</div>
-                </div>
-                <div className="w-px h-5 bg-zinc-700"></div>
-                <div className="text-center">
-                  <div className="text-yellow-400 font-bold">$40</div>
-                  <div className="text-zinc-600 text-[10px]">팬키트</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Right: CTA */}
-            <div className="mt-8 md:mt-0 md:w-96">
-              <div className="bg-zinc-900/50 border border-yellow-400/20 rounded-2xl p-5 md:p-6 space-y-4">
-                <div className="text-center">
-                  <div className="inline-flex items-center gap-2 bg-yellow-400/20 border border-yellow-400/40 rounded-full px-3 py-1 text-xs font-bold text-yellow-400 mb-2">
-                    KAVE 투표 진행 중
-                  </div>
-                  <p className="text-xs text-zinc-500">팬클럽 이름을 함께 정해요!</p>
-                </div>
-
-                <Link
-                  href="/kave"
-                  className="block w-full py-3.5 bg-yellow-400 hover:bg-yellow-300 text-black rounded-xl transition font-bold text-center text-sm"
-                >
-                  KAVE 입장하기
-                </Link>
-
-                <Link
-                  href="/shop"
-                  className="block w-full py-3 bg-transparent hover:bg-yellow-400/10 border border-yellow-400/30 text-yellow-400 rounded-xl transition text-sm font-semibold text-center"
-                >
-                  팬키트 구매 ($40)
-                </Link>
-              </div>
-
-              <div className="text-center mt-4">
-                {isSimulatingNFC ? (
-                  <div className="inline-flex items-center gap-2 text-sm text-yellow-400 bg-yellow-400/10 px-4 py-2 rounded-full border border-yellow-400/30 animate-pulse">
-                    <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                      <circle cx="12" cy="12" r="10" opacity="0.25"></circle>
-                      <path d="M12 2a10 10 0 0 1 10 10" strokeLinecap="round"></path>
-                    </svg>
-                    NFC 스캔 중...
-                  </div>
-                ) : (
-                  <button onClick={simulateNFC} className="text-xs text-zinc-500 hover:text-yellow-400 transition">
-                    팬키트 NFC 인증 시뮬레이션 →
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* About KAVE */}
-        <section className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-          <div className="p-4 bg-zinc-900/40 border border-zinc-800/40 rounded-xl">
-            <div className="text-lg mb-2">🗳️</div>
-            <h3 className="text-sm font-bold mb-1">KAVE</h3>
-            <p className="text-[11px] text-zinc-500 leading-relaxed">
-              PAL 전용 투표 공간. 투표로 BoA의 여정에 참여하세요.
-            </p>
-          </div>
-          <div className="p-4 bg-zinc-900/40 border border-zinc-800/40 rounded-xl">
-            <div className="text-lg mb-2">🎫</div>
-            <h3 className="text-sm font-bold mb-1">Pledge</h3>
-            <p className="text-[11px] text-zinc-500 leading-relaxed">
-              팬키트 구매 시 받는 투표권. NFC/QR로 인증합니다.
-            </p>
-          </div>
-          <div className="p-4 bg-zinc-900/40 border border-zinc-800/40 rounded-xl">
-            <div className="text-lg mb-2">🎬</div>
-            <h3 className="text-sm font-bold mb-1">독점 콘텐츠</h3>
-            <p className="text-[11px] text-zinc-500 leading-relaxed">
-              비하인드 영상, 미공개 포토, 라이브 토크.
-            </p>
-          </div>
-          <div className="p-4 bg-zinc-900/40 border border-zinc-800/40 rounded-xl">
-            <div className="text-lg mb-2">🎁</div>
-            <h3 className="text-sm font-bold mb-1">한정 굿즈</h3>
-            <p className="text-[11px] text-zinc-500 leading-relaxed">
-              멤버 전용 한정판 굿즈 & 포토카드.
-            </p>
-          </div>
-        </section>
-      </main>
-
-      {/* Footer */}
-      <footer className="border-t border-zinc-800/30 mt-16">
-        <div className="max-w-5xl mx-auto px-5 md:px-8 py-6">
-          <p className="text-[10px] text-zinc-600 text-center">
-            © 2024 BApal Entertainment. Always with BoA.
+        {/* Name */}
+        <div className="text-center">
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tight" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>
+            BA8
+          </h1>
+          <p className="text-[10px] md:text-xs text-zinc-600 tracking-[0.4em] uppercase mt-2">
+            Entertainment
           </p>
         </div>
-      </footer>
+
+        {/* Teaser */}
+        <p className="text-xs text-zinc-500 tracking-widest">
+          팬과 BoA의 새로운 만남
+        </p>
+
+        {/* Fandom Vote */}
+        <div className="w-full mt-4">
+          <div className="text-center mb-5">
+            <h2 className="text-sm font-bold text-white mb-1">BoA 공식 팬덤명 투표</h2>
+            <p className="text-[11px] text-zinc-500">새로운 시작, 팬덤의 이름을 함께 정해주세요</p>
+          </div>
+          <div className="space-y-2.5">
+            {FANDOM_CANDIDATES.map((opt) => {
+              const isVoted = voted === opt.id;
+              return (
+                <button
+                  key={opt.id}
+                  onClick={() => handleVoteClick(opt.id)}
+                  disabled={!!voted}
+                  className={`w-full text-left p-4 rounded-xl border transition-all ${
+                    isVoted
+                      ? 'border-yellow-400 bg-yellow-400/10'
+                      : voted
+                      ? 'border-zinc-800/30 bg-zinc-900/20 opacity-40'
+                      : 'border-zinc-800 bg-zinc-900/30 hover:border-yellow-400/40 cursor-pointer'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-bold text-sm">{opt.name}</h4>
+                      <p className="text-[10px] text-zinc-500 mt-0.5">{opt.desc}</p>
+                    </div>
+                    {isVoted && (
+                      <span className="text-yellow-400 text-xs font-bold">투표 완료</span>
+                    )}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* KAVE Button */}
+        <button
+          onClick={() => setShowKaveMsg(true)}
+          className="mt-4 inline-flex items-center gap-2 px-6 py-3 bg-white/5 hover:bg-white/10 border border-zinc-700/50 hover:border-zinc-600 rounded-full text-sm font-medium text-zinc-400 hover:text-white transition-all duration-300"
+        >
+          KAVE 이동하기
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
+        </button>
+        {showKaveMsg && (
+          <p className="text-[11px] text-zinc-500 -mt-4 animate-fade-in-up">
+            아직 KAVE가 열리지 않았습니다
+          </p>
+        )}
+      </div>
+
+      {/* Footer */}
+      <p className="mt-16 text-[10px] text-zinc-700">
+        © 2025 BA8 Entertainment
+      </p>
+
+      {/* Confirm Modal */}
+      {confirmTarget && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-5">
+          <div className="bg-zinc-900 border border-zinc-700 rounded-2xl p-6 max-w-sm w-full">
+            <h3 className="text-base font-bold text-white mb-2">투표 확인</h3>
+            <p className="text-sm text-zinc-400 mb-1">
+              <span className="text-yellow-400 font-bold">{confirmName}</span>에 투표하시겠습니까?
+            </p>
+            <p className="text-[11px] text-zinc-500 mb-6">
+              투표는 1회만 가능하며, 변경할 수 없습니다.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setConfirmTarget(null)}
+                className="flex-1 py-2.5 rounded-xl border border-zinc-700 text-sm text-zinc-400 hover:bg-zinc-800 transition"
+              >
+                취소
+              </button>
+              <button
+                onClick={handleConfirm}
+                disabled={submitting}
+                className="flex-1 py-2.5 rounded-xl bg-yellow-400 hover:bg-yellow-300 text-black text-sm font-bold transition disabled:opacity-50"
+              >
+                {submitting ? '처리 중...' : '투표하기'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
