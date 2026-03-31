@@ -94,11 +94,6 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Teaser */}
-        <p className="text-xs text-zinc-500 tracking-widest">
-          팬과 BoA의 새로운 만남
-        </p>
-
         {/* Fandom Vote */}
         <div className="w-full mt-4">
           <div className="text-center mb-5">
