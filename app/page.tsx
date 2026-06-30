@@ -9,27 +9,27 @@ const BOA = {
   name: 'BoA',
   nameKo: '보아',
   role: 'Singer · Producer',
-  avatar: '/boa-avatar.png',
+  avatar: '/boa-main.webp',
   href: 'https://boa.pledge.im',
 };
 
 const NEWS = [
   {
-    img: '/concert-25th.png',
+    img: '/news-fanconcert.jpg',
     tag: 'FAN CONCERT',
     date: '2026.06.28',
     title: "BoA 첫 공식 팬콘서트 'BoA THE MIC' 성료",
     href: 'https://tvreport.co.kr/music/article/1057697/',
   },
   {
-    img: '/content-mv-behind.png',
+    img: '/news-single.jpg',
     tag: 'NEW SINGLE',
-    date: '2026.05',
-    title: "독립 후 첫 디지털 싱글 'Ain't no hard feelings' 발매",
-    href: 'https://www.boaukofficial.com/',
+    date: '2026.05.30',
+    title: "독립 후 첫 디지털 싱글 'Ain't No Hard Feelings' 발매",
+    href: 'https://www.youtube.com/watch?v=YeVCiWLuqYU',
   },
   {
-    img: '/content-letter.png',
+    img: '/news-company.jpg',
     tag: 'COMPANY',
     date: '2026.03.03',
     title: "BoA, 1인 기획사 '베이팔 엔터테인먼트' 설립",
@@ -148,10 +148,6 @@ export default function Home() {
             <p className="text-sm text-zinc-400 leading-relaxed max-w-sm">
               2000년 데뷔 이후 아시아를 대표해 온 아티스트 BoA.
               25년간 함께한 SM을 떠나 직접 설립한 베이팔과 함께 새로운 여정을 시작합니다.
-            </p>
-            <p className="text-[12px] text-zinc-500">
-              공식 팬 플랫폼 <span className="text-zinc-300 font-medium">KAVE</span> ·
-              <span className="text-zinc-300 font-medium"> Pledge 1호 아티스트</span>
             </p>
             <span className="inline-flex items-center gap-2 text-sm font-bold text-yellow-400">
               KAVE 바로가기
