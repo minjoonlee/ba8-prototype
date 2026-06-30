@@ -132,9 +132,6 @@ export default function Home() {
               alt={BOA.name}
               className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
             />
-            <span className="absolute top-5 left-5 rounded-full bg-yellow-400 px-3 py-1 text-[11px] font-bold tracking-widest text-black">
-              1호 아티스트
-            </span>
           </div>
 
           <div className="flex flex-col justify-center gap-5 p-8 md:p-12">
