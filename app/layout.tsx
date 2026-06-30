@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "BApal - Always with BoA",
-  description: "BoA 공식 팬클럽 PALMATE",
+  title: "BApal Entertainment",
+  description: "BApal Entertainment — Always with our Artists",
 };
 
 export default function RootLayout({
@@ -24,8 +24,8 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      lang="ko"
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased scroll-smooth`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
