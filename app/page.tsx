@@ -144,7 +144,7 @@ export default function Home() {
             </div>
             <p className="text-sm text-zinc-400 leading-relaxed max-w-sm">
               2000년 데뷔 이후 아시아를 대표해 온 아티스트 BoA.
-              25년간 함께한 SM을 떠나 직접 설립한 베이팔과 함께 새로운 여정을 시작합니다.
+              직접 설립한 베이팔과 함께 새로운 여정을 시작합니다.
             </p>
             <span className="inline-flex items-center gap-2 text-sm font-bold text-yellow-400">
               KAVE 바로가기
