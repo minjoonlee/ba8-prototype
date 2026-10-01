@@ -1,7 +1,6 @@
 const NAV = [
   { label: 'Artist', href: '#artist' },
   { label: 'News', href: '#news' },
-  { label: 'Audition', href: '#audition' },
   { label: 'Company', href: '#company' },
 ];
 
@@ -195,34 +194,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===== Audition ===== */}
-      <section id="audition" className="scroll-mt-16">
-        <div className="mx-auto max-w-6xl px-5 py-24 md:py-32">
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-yellow-400 to-amber-500 px-8 py-14 md:px-16 md:py-20 text-black">
-            <div className="relative z-10 max-w-xl">
-              <p className="text-[11px] tracking-[0.4em] uppercase mb-4 font-bold opacity-70">Audition</p>
-              <h2 className="text-3xl md:text-5xl font-bold tracking-tight leading-tight">
-                BApal과 함께할
-                <br />
-                새로운 아티스트를 찾습니다
-              </h2>
-              <p className="mt-5 text-sm md:text-base text-black/70 leading-relaxed">
-                장르와 국적에 제한 없이, 무대를 꿈꾸는 모든 분들의 지원을 기다립니다.
-              </p>
-              <a
-                href="mailto:audition@bapal.kr"
-                className="mt-8 inline-flex items-center gap-2 rounded-full bg-black px-6 py-3 text-sm font-bold text-white hover:bg-zinc-800 transition-colors"
-              >
-                지원하기
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                </svg>
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* ===== Company / Business ===== */}
       <section id="company" className="border-t border-white/5 bg-zinc-900/20 scroll-mt-16">
         <div className="mx-auto max-w-6xl px-5 py-20 md:py-24">
@@ -272,7 +243,6 @@ export default function Home() {
             <div className="grid grid-cols-2 gap-x-12 gap-y-2 text-[12px] text-zinc-500">
               <a href="#artist" className="hover:text-white transition-colors">Artist</a>
               <a href="#news" className="hover:text-white transition-colors">News</a>
-              <a href="#audition" className="hover:text-white transition-colors">Audition</a>
               <a href="#company" className="hover:text-white transition-colors">Company</a>
               <a href={BOA.href} className="hover:text-white transition-colors">BoA KAVE</a>
               <a href="mailto:contact@bapal.kr" className="hover:text-white transition-colors">Contact</a>
