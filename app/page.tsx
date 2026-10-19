@@ -245,13 +245,13 @@ export default function Home() {
               <a href="#news" className="hover:text-white transition-colors">News</a>
               <a href="#company" className="hover:text-white transition-colors">Company</a>
               <a href={BOA.href} className="hover:text-white transition-colors">BoA KAVE</a>
-              <a href="mailto:contact@bapal.kr" className="hover:text-white transition-colors">Contact</a>
+              <a href="mailto:Bapal@bapalent.com" className="hover:text-white transition-colors">Contact</a>
             </div>
           </div>
 
           <div className="mt-12 pt-6 border-t border-white/5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <p className="text-[11px] text-zinc-600">© 2026 BApal Entertainment. All rights reserved.</p>
-            <p className="text-[11px] text-zinc-600">contact@bapal.kr</p>
+            <p className="text-[11px] text-zinc-600">Bapal@bapalent.com</p>
           </div>
         </div>
       </footer>
